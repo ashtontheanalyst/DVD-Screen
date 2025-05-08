@@ -21,9 +21,12 @@ class DVD {
 
         // Logo
         float x, y;
-        float xspd, yspd;
+        float xspd, yspd; // increments
+        int r, g, b, a;
+        sf::Color color;
         sf::Texture texture;
-        sf::Sprite logo; 
+        sf::Sprite logo;
+
 
         // INITIALIZATION ---------------------------------------------------
         void initVariables();
@@ -40,6 +43,7 @@ class DVD {
         // FUNCTIONS -------------------------------------------------------        
         void pollEvents();
         
+        void changeColor();
         void updateDVD();
         void update();
         

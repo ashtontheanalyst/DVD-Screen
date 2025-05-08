@@ -11,6 +11,13 @@ void DVD::initVariables() {
     // controls how many pixels per frame it moves (right now it moves 120px/sec)
     this->xspd = 2.0f;
     this->yspd = 2.0f;
+
+    // color of the logo
+    this->r = 255;
+    this->g = 255;
+    this->b = 245;
+    this->a = 225;
+    this->color = sf::Color(this->r, this->g, this->b, this->a);
 }
 
 
@@ -39,7 +46,7 @@ void DVD::initDVD() {
 
     this->logo.setTexture(this->texture);                // set the png
     this->logo.scale(sf::Vector2f(0.125, 0.125));        // multiply the original x and y px by this value
-    this->logo.setColor(sf::Color(255, 255, 245, 225));  // set color to not super bright faded white
+    this->logo.setColor(sf::Color(color));               // set color to not super bright faded white
     this->logo.setPosition(this->x, this->y);            // set initial pos.
 }
 
@@ -88,8 +95,20 @@ void DVD::pollEvents() {
 }
 
 
-void DVD::updateDVD() {
+// For changing the color var
+void DVD::changeColor() {
+    this->r = rand() % 255;
+    this->g = rand() % 255;
+    this->b = rand() % 255;
+    
+    this->color = sf::Color(this->r, this->g, this->b, this->a);
 
+    this->logo.setColor(this->color);
+}
+
+
+// Main updating, direction changing, and color changing
+void DVD::updateDVD() {
     // move the logos coords
     this->x += this->xspd;
     this->y += this->yspd;
@@ -97,11 +116,13 @@ void DVD::updateDVD() {
     // x axis boundary condition, flip direction
     if (this->x > 671 || this->x <= 0) {
         this->xspd *= -1.0;
+        this->changeColor();
     }
 
     // same but for y axis
     if (this->y > 525 || this->y <= 0) {
         this->yspd *= -1.0;
+        this->changeColor();
     }
 
     this->logo.setPosition(this->x, this->y); // tracks these changes to our var's
