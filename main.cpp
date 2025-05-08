@@ -4,6 +4,8 @@
 #include "DVD.h"
 
 int main() {
+    // set the random gen. seed
+    std::srand(static_cast<unsigned>(time(NULL)));
 
     DVD dvd; // make a variable called dvd of class DVD
 

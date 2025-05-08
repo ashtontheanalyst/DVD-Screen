@@ -8,6 +8,9 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 
+#include <ctime> // for our random generator
+#include <iostream>
+
 class DVD {
     private:
         // VARIABBLES -------------------------------------------------------
@@ -16,9 +19,16 @@ class DVD {
         sf::VideoMode videoMode; // this helps make our application screen
         sf::Event ev; // This event var. is used for tracking things like button presses, keys, etc.
 
+        // Logo
+        float x;
+        float y;
+        sf::Texture texture;
+        sf::Sprite logo; 
+
         // INITIALIZATION ---------------------------------------------------
         void initVariables();
         void initWindow();
+        void initDVD();
 
     public:
         DVD(); // Constructor, sets up the inital class and initializes
@@ -27,8 +37,11 @@ class DVD {
         // ACCESSORS -------------------------------------------------------
         const bool running() const; // looks into the private section and pulls a value into public
 
-        // FUNCTIONS -------------------------------------------------------
+        // FUNCTIONS -------------------------------------------------------        
         void pollEvents();
+        
+        void updateDVD(); // Moves DVD logo
         void update();
+        
         void render();
 };

@@ -1,6 +1,7 @@
 // This is the actual brains behind the DVD class
 
 #include "DVD.h"
+#include <iostream>
 
 // PRIVATE ------------------------------------------------------------------
 
@@ -19,6 +20,22 @@ void DVD::initWindow() {
 }
 
 
+// making the DVD logo appear
+void DVD::initDVD() {
+    // End program if the DVD logo file doesn't load in
+    if (!texture.loadFromFile("dvdLogo.png")) {
+        std::cout << "ERROR: Could not load image, check path to image in code." << '\n';
+    }
+
+    this->x = rand() % 300; // first frame x val. of logo is bet 0 and 300 pix
+    this->y = rand() % 300;
+
+    this->logo.setTexture(this->texture);
+    this->logo.setPosition(this->x, this->y);
+    this->logo.scale(sf::Vector2f(0.125, 0.125));
+}
+
+
 
 
 // PUBLIC -------------------------------------------------------------------
@@ -27,6 +44,7 @@ void DVD::initWindow() {
 DVD::DVD() {
     this->initVariables();
     this->initWindow();
+    this->initDVD();
 }
 
 
@@ -62,15 +80,24 @@ void DVD::pollEvents() {
 }
 
 
+// update the DVD pos.
+void DVD::updateDVD() {
+    this->logo.setPosition(this->x, this->y);
+}
+
+
 // Our backend brain logic, making the pixels and stuff
 void DVD::update() {
     this->pollEvents(); // Since it's a blank screen we're just checking to see if there was any input
+    // this->updateDVD();
 }
 
 
 // Put the pixels on the screen
 void DVD::render() {
     this->window->clear(sf::Color(0, 0, 0, 255)); // Gives us a black screen, refreshes every second
-    
+
+    this->window->draw(this->logo); // put the logo on the screen
+
     this->window->display(); // put the render to screen
 }
