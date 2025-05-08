@@ -88,16 +88,19 @@ void DVD::pollEvents() {
 }
 
 
-// update the DVD logo position
-// This needs more work, the logic is not correct boundary and switch wise but we have movement!!
-void DVD::moveDVD() {
+void DVD::updateDVD() {
+
+    // move the logos coords
     this->x += this->xspd;
-    if (this->x == 672) {
+    this->y += this->yspd;
+    
+    // x axis boundary condition, flip direction
+    if (this->x > 671 || this->x <= 0) {
         this->xspd *= -1.0;
     }
 
-    this->y += this->yspd;
-    if (this->y == 526) {
+    // same but for y axis
+    if (this->y > 525 || this->y <= 0) {
         this->yspd *= -1.0;
     }
 
@@ -108,7 +111,7 @@ void DVD::moveDVD() {
 // Our backend brain logic, making the pixels and stuff
 void DVD::update() {
     this->pollEvents(); // Check to see if we hit 'ESC' or close
-    this->moveDVD(); // updates the DVD's position var's
+    this->updateDVD();
 }
 
 

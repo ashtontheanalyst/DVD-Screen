@@ -40,7 +40,7 @@ class DVD {
         // FUNCTIONS -------------------------------------------------------        
         void pollEvents();
         
-        void moveDVD(); // Moves DVD logo
+        void updateDVD();
         void update();
         
         void render();
