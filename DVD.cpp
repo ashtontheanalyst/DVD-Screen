@@ -7,6 +7,10 @@
 
 void DVD::initVariables() {
     this->window = nullptr;
+
+    // controls how many pixels per frame it moves (right now it moves 120px/sec)
+    this->xspd = 2.0f;
+    this->yspd = 2.0f;
 }
 
 
@@ -17,12 +21,15 @@ void DVD::initWindow() {
 
     // Using the SFML library, make a window 600x800 pixels from 'videoMode', titlebar, and a close button
     this->window = new sf::RenderWindow(this->videoMode, "Please Enter DVD . . .    Press 'ESC' to Exit", sf::Style::Titlebar | sf::Style::Close);
+
+    this->window->setFramerateLimit(60);
 }
 
 
 // making the DVD logo appear
 void DVD::initDVD() {
     // End program if the DVD logo file doesn't load in
+    // PNG Size is h: 590px | w: 1024px (After scaling is h: 73.75px | w: 128px)
     if (!texture.loadFromFile("dvdLogo.png")) {
         std::cout << "ERROR: Could not load image, check path to image in code." << '\n';
     }
@@ -30,9 +37,10 @@ void DVD::initDVD() {
     this->x = rand() % 300; // first frame x val. of logo is bet 0 and 300 pix
     this->y = rand() % 300;
 
-    this->logo.setTexture(this->texture);
-    this->logo.setPosition(this->x, this->y);
-    this->logo.scale(sf::Vector2f(0.125, 0.125));
+    this->logo.setTexture(this->texture);                // set the png
+    this->logo.scale(sf::Vector2f(0.125, 0.125));        // multiply the original x and y px by this value
+    this->logo.setColor(sf::Color(255, 255, 245, 225));  // set color to not super bright faded white
+    this->logo.setPosition(this->x, this->y);            // set initial pos.
 }
 
 
@@ -80,16 +88,27 @@ void DVD::pollEvents() {
 }
 
 
-// update the DVD pos.
-void DVD::updateDVD() {
-    this->logo.setPosition(this->x, this->y);
+// update the DVD logo position
+// This needs more work, the logic is not correct boundary and switch wise but we have movement!!
+void DVD::moveDVD() {
+    this->x += this->xspd;
+    if (this->x == 672) {
+        this->xspd *= -1.0;
+    }
+
+    this->y += this->yspd;
+    if (this->y == 526) {
+        this->yspd *= -1.0;
+    }
+
+    this->logo.setPosition(this->x, this->y); // tracks these changes to our var's
 }
 
 
 // Our backend brain logic, making the pixels and stuff
 void DVD::update() {
-    this->pollEvents(); // Since it's a blank screen we're just checking to see if there was any input
-    // this->updateDVD();
+    this->pollEvents(); // Check to see if we hit 'ESC' or close
+    this->moveDVD(); // updates the DVD's position var's
 }
 
 
@@ -97,7 +116,7 @@ void DVD::update() {
 void DVD::render() {
     this->window->clear(sf::Color(0, 0, 0, 255)); // Gives us a black screen, refreshes every second
 
-    this->window->draw(this->logo); // put the logo on the screen
+    this->window->draw(this->logo); // put the logo on the screen at it's new position
 
     this->window->display(); // put the render to screen
 }

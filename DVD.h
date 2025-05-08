@@ -20,8 +20,8 @@ class DVD {
         sf::Event ev; // This event var. is used for tracking things like button presses, keys, etc.
 
         // Logo
-        float x;
-        float y;
+        float x, y;
+        float xspd, yspd;
         sf::Texture texture;
         sf::Sprite logo; 
 
@@ -40,7 +40,7 @@ class DVD {
         // FUNCTIONS -------------------------------------------------------        
         void pollEvents();
         
-        void updateDVD(); // Moves DVD logo
+        void moveDVD(); // Moves DVD logo
         void update();
         
         void render();
